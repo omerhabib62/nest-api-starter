@@ -6,13 +6,10 @@ import {
   HttpStatus,
   Logger,
 } from '@nestjs/common';
-import { HttpAdapterHost } from '@nestjs/core';
 
 @Catch()
 export class AllExceptionsFilter implements ExceptionFilter {
   private readonly logger = new Logger(AllExceptionsFilter.name);
-
-  constructor() {}
 
   catch(exception: unknown, host: ArgumentsHost): void {
     const ctx = host.switchToHttp();
@@ -24,15 +21,19 @@ export class AllExceptionsFilter implements ExceptionFilter {
         ? exception.getStatus()
         : HttpStatus.INTERNAL_SERVER_ERROR;
 
+    // --- NUCLEAR DEBUGGING START ---
+    // This prints the raw object no matter what it is.
+    console.log('====================================');
+    console.log('🔥 CRASH DETECTED 🔥');
+    console.log('Exception Type:', typeof exception);
+    console.log('Raw Exception:', exception);
+    console.log('====================================');
+    // --- NUCLEAR DEBUGGING END ---
+
     const message =
       exception instanceof HttpException
         ? exception.getResponse()
         : 'Internal Server Error';
-
-    // Log the error for the developer (You)
-    this.logger.error(
-      `HTTP Status: ${httpStatus} Error Message: ${JSON.stringify(message)}`,
-    );
 
     const responseBody = {
       statusCode: httpStatus,

@@ -5,6 +5,7 @@ import { ThrottlerModule, ThrottlerGuard } from '@nestjs/throttler';
 import { APP_GUARD } from '@nestjs/core';
 import { envValidationSchema } from './config/env.validation';
 import { HealthModule } from './health/health.module';
+import { PaymentsModule } from './payments/payments.module';
 
 @Module({
   imports: [
@@ -38,6 +39,8 @@ import { HealthModule } from './health/health.module';
 
     // 4. Feature Modules
     HealthModule,
+
+    PaymentsModule,
   ],
   providers: [
     {
